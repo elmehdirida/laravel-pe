@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string("email", 100);
             $table->string("password", 100);
             $table->string("role", 100);
+            $table->rememberToken();
         });
     }
 

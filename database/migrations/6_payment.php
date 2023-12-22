@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('payment', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->integer("amount");
+            $table->decimal("amount" , 8, 2);
             $table->string("payment_method", 100);
             $table->string("payment_status", 100);
             $table->foreignId("order_id")->constrained("order")->cascadeOnDelete();

@@ -9,7 +9,6 @@ use App\Http\Controllers\OrderProductController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,7 +26,6 @@ Route::group(['middleware' => ['auth:sanctum']],function ()
 {
     // Users Routes
     Route::get('/users', [UserController::class, 'index']);
-    Route::post('/user', [UserController::class, 'store']);
     Route::get('/users/{id}', [UserController::class, 'show']);
     Route::put('/users/{id}', [UserController::class, 'update']);
     Route::delete('/users/{id}', [UserController::class, 'destroy']);
@@ -50,6 +48,9 @@ Route::group(['middleware' => ['auth:sanctum']],function ()
     Route::put('/orders/{id}', [OrderController::class, 'update']);
     Route::delete('/orders/{id}', [OrderController::class, 'destroy']);
 
+    //getOrdersByUserId
+    Route::get('/users/{id}/orders', [OrderController::class, 'getOrdersByUserId']);
+
     //orderproducts routes
     Route::post('/orderproduct', [OrderProductController::class, 'store']);
     Route::put('/orderproducts/{id}', [OrderProductController::class, 'update']);
@@ -60,6 +61,11 @@ Route::group(['middleware' => ['auth:sanctum']],function ()
     Route::post('/payment', [PaymentController::class, 'store']);
     Route::put('/payments/{id}', [PaymentController::class, 'update']);
     Route::delete('/payments/{id}', [PaymentController::class, 'destroy']);
+
+    //comments routes
+    Route::post('/comments', [CommentController::class, 'store']);
+    Route::put('/comments/{id}', [CommentController::class, 'update']);
+    Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
 
 });
 

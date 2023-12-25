@@ -25,7 +25,7 @@ class ProductResource extends JsonResource
             "image"=>$this->image,
             'category' => new CategoryResource($this->whenLoaded('category')),
             'discount' => new DiscountResource($this->whenLoaded('discount')),
-            'comment' => CommentResource::collection($this->whenLoaded('comments')),
+            'comments' => CommentResource::collection($this->whenLoaded('comments')),
             'stock'=>$this->stock,
 
         ];

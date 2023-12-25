@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Resources\OrderResource;
 use Illuminate\Validation\Validator;
@@ -108,7 +109,7 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id) :JsonResponse
     {
         if (!Order::find($id)) {
             return response()->json([
@@ -119,6 +120,18 @@ class OrderController extends Controller
 
         $order->delete();
 
-        return response()->json(null, 204);
+        return response()->json(
+            ['message' => 'Order deleted successfully',
+                'status' => 'success']
+            , 202);
+    }
+
+    /**
+     * get orders by user id
+     */
+    public function getOrdersByUserId(string $id):JsonResponse
+    {
+        $orders = Order::where('user_id', $id)->where('order_status', 'pending')->get();
+        return response()->json(OrderResource::collection($orders), 200);
     }
 }

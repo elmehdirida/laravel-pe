@@ -67,7 +67,10 @@ class ProductController extends Controller
                 'message' => 'Product not found'
             ], 404);
         }
-        return new ProductResource(Product::find($id));
+        //with comments
+        return new ProductResource(Product::with(['comments.user', 'category', 'discount'])->find(
+            $id
+        ));
     }
 
     /**

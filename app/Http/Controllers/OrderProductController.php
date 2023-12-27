@@ -32,6 +32,13 @@ class OrderProductController extends Controller
         if ($validated->fails()) {
             return response()->json($validated->errors(), 422);
         }
+        //update the stock of the product and verify if there is enough stock
+        $product = Product::find($request->product_id);
+          if ($product->stock < $request->quantity) {
+                return response()->json(['error' => 'Not enough stock'], 422);
+          }
+        $product->stock = $product->stock - $request->quantity;
+        $product->save();
 
         $orderProduct = OrderProduct::create([
             'order_id' => $request->order_id,

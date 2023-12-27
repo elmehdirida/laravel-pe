@@ -11,18 +11,21 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        $fields = $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|string|unique:users,email',
-            'password' => 'required|string|confirmed',
-            'role' => 'required|string',
+        $validated = validator($request->all(), [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8'],
+            'role' => ['required', 'string', 'max:255']
         ]);
+        if ($validated->fails()) {
+            return response()->json($validated->errors(), 422);
+        }
 
         $user = User::create([
-            'name' => $fields['name'],
-            'email' => $fields['email'],
-            'role' => $fields['role'],
-            'password' => bcrypt($fields['password']),
+            'name' => $request->name,
+            'email' => $request->email,
+             'role' => $request->role,
+            'password' => Hash::make($request->password),
         ]);
 
         $token = $user->createToken('myapptoken')->plainTextToken;

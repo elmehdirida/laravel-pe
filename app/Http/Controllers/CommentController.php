@@ -14,7 +14,7 @@ class CommentController extends Controller
      */
     public function index()
     {
-         $comments = Comment::with(['user'])->get();
+        $comments = Comment::with(['user'])->get();
         return CommentResource::collection($comments);
     }
 
@@ -34,11 +34,10 @@ class CommentController extends Controller
     {
 
         $validated = validator($request->all(), [
-            //'text' => ['required', 'string', 'max:255'],
-            //'rating' => ['required', 'integer 1-5'],
-            //'user_id' => ['required', 'integer'],
-            //'product_id' => ['required', 'integer'],
-
+            'text' => ['required', 'string', 'max:255'],
+            'rating' => ['required', 'numeric'],
+            'user_id' => ['required', 'numeric'],
+            'product_id' => ['required', 'numeric'],
         ]);
         if ($validated->fails()) {
             return response()->json($validated->errors(), 422);
@@ -46,13 +45,15 @@ class CommentController extends Controller
         $comment = Comment::create(
             [
                 'text' => $request->text,
+                'rating' => $request->rating,
                 'user_id' => $request->user_id,
                 'product_id' => $request->product_id,
-                'date' => now(),
-                'rating' => $request->rating,
+                'date' => date('Y-m-d H:i:s'),
             ]
         );
+        $comment->load('user');
         return new CommentResource($comment);
+
     }
 
     /**

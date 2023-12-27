@@ -20,10 +20,7 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password'),
             'role' => 'admin',
          ]);
-            \App\Models\Order::factory(10)->create();
-            \App\Models\Payment::factory(10)->create();
-            \App\Models\Comment::factory(10)->create();
-            \App\Models\OrderProduct::factory(10)->create();
+
 
     }
 
